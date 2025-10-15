@@ -1,0 +1,84 @@
+// -----------------------------------------------------------------------------
+// File: post.proto
+//
+// This Protocol Buffers file defines the gRPC contract for the PostService.
+// It includes service definitions for creating, retrieving, updating, deleting,
+// and listing posts. Each RPC method has corresponding request and response
+// messages. The syntax follows proto3 conventions and uses message types for
+// structured data exchange between microservices.
+//
+// Syntax:
+// - Uses proto3 syntax for modern Protocol Buffers features.
+// - Defines service and message types for CRUD operations.
+// - Supports repeated fields for listing multiple posts.
+//
+// Purpose:
+// - Enables strongly-typed, language-agnostic communication between services.
+// - Provides a contract for backend and API Gateway integration.
+// - Facilitates code generation for gRPC servers and clients.
+// -----------------------------------------------------------------------------
+
+syntax = "proto3";
+
+package post;
+
+import "google/protobuf/empty.proto";
+import "proto/common/types.proto";
+
+service PostService {
+	rpc CreatePost (CreatePostRequest) returns (CreatePostResponse);
+	rpc GetPost (GetPostRequest) returns (GetPostResponse);
+	rpc UpdatePost (UpdatePostRequest) returns (UpdatePostResponse);
+	rpc DeletePost (DeletePostRequest) returns (google.protobuf.Empty);
+	rpc ListPosts (ListPostsRequest) returns (ListPostsResponse);
+}
+
+message Post {
+	string id = 1;
+	string author_id = 2;
+	string title = 3;
+	string content = 4;
+	int64 created_at = 5;
+	int64 updated_at = 6;
+}
+
+message CreatePostRequest {
+	string author_id = 1;
+	string title = 2;
+	string content = 3;
+}
+
+message CreatePostResponse {
+	Post post = 1;
+}
+
+message GetPostRequest {
+	string id = 1;
+}
+
+message GetPostResponse {
+	Post post = 1;
+}
+
+message UpdatePostRequest {
+	string id = 1;
+	string title = 2;
+	string content = 3;
+}
+
+message UpdatePostResponse {
+	Post post = 1;
+}
+
+message DeletePostRequest {
+	string id = 1;
+}
+
+message ListPostsRequest {
+	int32 page = 1;
+	int32 page_size = 2;
+}
+
+message ListPostsResponse {
+	repeated Post posts = 1;
+}

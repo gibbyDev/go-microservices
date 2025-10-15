@@ -1,4 +1,4 @@
-module github.com/yourusername/go-microservices/services/user-service
+module github.com/gibbyDev/go-microservices/services/user-service
 
 go 1.21
 

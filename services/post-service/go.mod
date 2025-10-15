@@ -1,4 +1,4 @@
-module github.com/yourusername/go-microservices/services/post-service
+module github.com/gibbyDev/go-microservices/services/post-service
 
 go 1.21
 

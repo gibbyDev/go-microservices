@@ -1,4 +1,4 @@
-module github.com/yourusername/go-microservices/services/auth-service
+module github.com/gibbyDev/go-microservices/services/auth-service
 
 go 1.21
 

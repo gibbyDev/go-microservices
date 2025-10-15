@@ -1,0 +1,88 @@
+// -----------------------------------------------------------------------------
+// File: auth.proto
+//
+// This Protocol Buffers file defines the gRPC contract for the AuthService.
+// It includes service definitions for user registration, login, JWT token validation,
+// and user info retrieval. Each RPC method has corresponding request and response
+// messages. The syntax follows proto3 conventions and uses message types for
+// structured data exchange between microservices.
+//
+// Syntax:
+// - Uses proto3 syntax for modern Protocol Buffers features.
+// - Defines service and message types for authentication operations.
+// - Supports repeated fields for user roles and extensibility.
+//
+// Purpose:
+// - Enables strongly-typed, language-agnostic communication between services.
+// - Provides a contract for backend and API Gateway integration.
+// - Facilitates code generation for gRPC servers and clients.
+// -----------------------------------------------------------------------------
+syntax = "proto3";
+
+package auth;
+
+import "google/protobuf/empty.proto";
+import "proto/common/types.proto"; // For shared types if needed
+
+service AuthService {
+  // User registration
+  rpc Register (RegisterRequest) returns (RegisterResponse);
+
+  // User login
+  rpc Login (LoginRequest) returns (LoginResponse);
+
+  // Validate JWT token
+  rpc ValidateToken (ValidateTokenRequest) returns (ValidateTokenResponse);
+
+  // Get user info by token
+  rpc GetUserInfo (GetUserInfoRequest) returns (GetUserInfoResponse);
+
+}
+
+// Registration
+message RegisterRequest {
+  string username = 1;
+  string email = 2;
+  string password = 3;
+}
+
+message RegisterResponse {
+  string user_id = 1;
+  string message = 2;
+}
+
+// Login
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+  string user_id = 3;
+  string message = 4;
+}
+
+// Token validation
+message ValidateTokenRequest {
+  string token = 1;
+}
+
+message ValidateTokenResponse {
+  bool valid = 1;
+  string user_id = 2;
+  string message = 3;
+}
+
+// Get user info
+message GetUserInfoRequest {
+  string token = 1;
+}
+
+message GetUserInfoResponse {
+  string user_id = 1;
+  string username = 2;
+  string email = 3;
+  repeated string roles = 4;
+}
