@@ -23,11 +23,13 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	"github.com/gibbyDev/go-microservices/api-gateway/internal/handlers"
+	"github.com/gibbyDev/go-microservices/api-gateway/internal/routes"
+
+	"github.com/gibbyDev/go-microservices/api-gateway/internal/clients"
 	"github.com/gofiber/fiber/v2"
 	"google.golang.org/grpc"
-	"go-microservices/api-gateway/internal/clients"
-	"go-microservices/api-gateway/internal/handlers"
-	"go-microservices/api-gateway/internal/routes"
 )
 
 func main() {

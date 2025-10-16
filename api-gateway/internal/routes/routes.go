@@ -16,13 +16,13 @@
 // - Ensures consistent application of authentication middleware.
 // - Maps REST endpoints to handler functions.
 // -----------------------------------------------------------------------------
- 
+
 package routes
 
 import (
+	"github.com/gibbyDev/go-microservices/api-gateway/internal/handlers"
+	"github.com/gibbyDev/go-microservices/api-gateway/internal/middlewares"
 	"github.com/gofiber/fiber/v2"
-	"go-microservices/api-gateway/internal/handlers"
-	"go-microservices/api-gateway/internal/middlewares"
 )
 
 func RegisterAuthRoutes(app *fiber.App, authHandler *handlers.AuthHandler) {

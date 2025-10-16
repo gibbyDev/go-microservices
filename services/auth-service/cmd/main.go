@@ -24,9 +24,10 @@ import (
 	"log"
 	"net"
 	"os"
-	"google.golang.org/grpc"
+
 	pb "github.com/gibbyDev/go-microservices/proto/auth"
-	"go-microservices/services/auth-service/internal/server"
+	"github.com/gibbyDev/go-microservices/services/auth-service/internal/server"
+	"google.golang.org/grpc"
 )
 
 func main() {

@@ -21,9 +21,10 @@ package handlers
 import (
 	"context"
 	"net/http"
-	"github.com/gofiber/fiber/v2"
-	"go-microservices/api-gateway/internal/clients"
+
+	"github.com/gibbyDev/go-microservices/api-gateway/internal/clients"
 	pb "github.com/gibbyDev/go-microservices/proto/auth"
+	"github.com/gofiber/fiber/v2"
 )
 
 type AuthHandler struct {

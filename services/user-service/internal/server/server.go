@@ -16,9 +16,11 @@
 // - Handles creation, retrieval, updating, deletion, and listing of users.
 // - Provides a contract for future business logic and database integration.
 // -----------------------------------------------------------------------------
+package server
 
 import (
 	"context"
+
 	pb "github.com/gibbyDev/go-microservices/proto/user"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
@@ -60,7 +62,6 @@ func (s *UserServer) ListUsers(ctx context.Context, req *pb.ListUsersRequest) (*
 	users := []*pb.User{}
 	return &pb.ListUsersResponse{Users: users}, nil
 }
-package server
 
 // TODO: Add gRPC server implementation for user service
 // Example implementations:
