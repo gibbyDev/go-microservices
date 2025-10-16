@@ -37,6 +37,8 @@ service AuthService {
   // Get user info by token
   rpc GetUserInfo (GetUserInfoRequest) returns (GetUserInfoResponse);
 
+  // Confirm email
+  rpc ConfirmEmail (ConfirmEmailRequest) returns (ConfirmEmailResponse);
 }
 
 // Registration
@@ -85,4 +87,15 @@ message GetUserInfoResponse {
   string username = 2;
   string email = 3;
   repeated string roles = 4;
+  bool email_verified = 5; // <-- Add this field
+}
+
+// Confirm email
+message ConfirmEmailRequest {
+  string token = 1;
+}
+
+message ConfirmEmailResponse {
+  bool success = 1;
+  string message = 2;
 }
