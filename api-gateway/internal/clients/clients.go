@@ -62,10 +62,6 @@ func (a *AuthClient) GetUserInfo(ctx context.Context, req *pb.GetUserInfoRequest
 // with the UserService for creating, retrieving, updating, deleting, and listing users.
 // -----------------------------------------------------------------------------
 
-import (
-	pbUser "github.com/gibbyDev/go-microservices/proto/user"
-)
-
 type UserClient struct {
 	client pbUser.UserServiceClient
 }

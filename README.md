@@ -7,7 +7,7 @@ A modern microservices architecture built with Go, featuring gRPC communication,
 This project implements a microservices architecture with the following components:
 
 - **API Gateway**: REST API gateway that routes requests to appropriate microservices
-- **Auth Service**: Handles user authentication and authorization
+- **Auth Service**: Handles user authentication and authorization. Sets JWT for every other service, to 
 - **User Service**: Manages user profiles and information
 - **Post Service**: Manages blog posts and content
 - **Shared Infrastructure**: Database, caching, monitoring, and observability
