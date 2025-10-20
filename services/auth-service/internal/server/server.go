@@ -20,7 +20,7 @@ package server
 
 import (
 	"context"
-	pb "github.com/gibbyDev/go-microservices/proto/auth"
+	pb "go-microservices/proto/auth"
 )
 
 type AuthServer struct {

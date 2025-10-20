@@ -22,8 +22,9 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/gibbyDev/go-microservices/api-gateway/internal/clients"
-	pb "github.com/gibbyDev/go-microservices/proto/auth"
+	"go-microservices/api-gateway/internal/clients"
+	pb "go-microservices/proto/auth"
+
 	"github.com/gofiber/fiber/v2"
 )
 

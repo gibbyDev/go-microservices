@@ -16,10 +16,12 @@
 // - Handles creation, retrieval, updating, deletion, and listing of posts.
 // - Provides a contract for future business logic and database integration.
 // -----------------------------------------------------------------------------
+package server
 
 import (
 	"context"
-	pb "github.com/gibbyDev/go-microservices/proto/post"
+	pb "go-microservices/proto/post"
+
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
@@ -60,7 +62,6 @@ func (s *PostServer) ListPosts(ctx context.Context, req *pb.ListPostsRequest) (*
 	posts := []*pb.Post{}
 	return &pb.ListPostsResponse{Posts: posts}, nil
 }
-package server
 
 // TODO: Add gRPC server implementation for post service
 // Example implementations:

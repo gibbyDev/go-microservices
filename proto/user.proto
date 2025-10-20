@@ -22,8 +22,10 @@ syntax = "proto3";
 
 package user;
 
+option go_package = "/user;userpb";
+
 import "google/protobuf/empty.proto";
-import "proto/common/types.proto";
+// import "proto/common/types.proto";
 
 service UserService {
   rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);

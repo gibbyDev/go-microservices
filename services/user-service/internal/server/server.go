@@ -21,7 +21,8 @@ package server
 import (
 	"context"
 
-	pb "github.com/gibbyDev/go-microservices/proto/user"
+	pb "go-microservices/proto/user"
+
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 

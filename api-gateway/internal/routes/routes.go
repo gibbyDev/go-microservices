@@ -20,8 +20,9 @@
 package routes
 
 import (
-	"github.com/gibbyDev/go-microservices/api-gateway/internal/handlers"
-	"github.com/gibbyDev/go-microservices/api-gateway/internal/middlewares"
+	"go-microservices/api-gateway/internal/handlers"
+	"go-microservices/api-gateway/internal/middlewares"
+
 	"github.com/gofiber/fiber/v2"
 )
 

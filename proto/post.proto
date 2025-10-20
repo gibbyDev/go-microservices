@@ -22,8 +22,10 @@ syntax = "proto3";
 
 package post;
 
+option go_package = "/post;postpb";
+
 import "google/protobuf/empty.proto";
-import "proto/common/types.proto";
+// import "proto/common/types.proto";
 
 service PostService {
 	rpc CreatePost (CreatePostRequest) returns (CreatePostResponse);

@@ -17,15 +17,17 @@
 // - Exposes post CRUD operations to other services via gRPC.
 // - Manages server startup, listening, and graceful error handling.
 // -----------------------------------------------------------------------------
+package main
 
 import (
 	"fmt"
+	pb "go-microservices/proto/post"
+	"go-microservices/services/post-service/internal/server"
 	"log"
 	"net"
 	"os"
+
 	"google.golang.org/grpc"
-	pb "github.com/gibbyDev/go-microservices/proto/post"
-	"go-microservices/services/post-service/internal/server"
 )
 
 func main() {

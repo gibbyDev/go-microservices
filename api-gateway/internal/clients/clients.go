@@ -19,8 +19,11 @@ package clients
 
 import (
 	"context"
+	pb "go-microservices/proto/auth"
+	pbPost "go-microservices/proto/post"
+	pbUser "go-microservices/proto/user"
+
 	"google.golang.org/grpc"
-	pb "github.com/gibbyDev/go-microservices/proto/auth"
 )
 
 type AuthClient struct {
@@ -48,6 +51,7 @@ func (a *AuthClient) ValidateToken(ctx context.Context, req *pb.ValidateTokenReq
 func (a *AuthClient) GetUserInfo(ctx context.Context, req *pb.GetUserInfoRequest) (*pb.GetUserInfoResponse, error) {
 	return a.client.GetUserInfo(ctx, req)
 }
+
 // -----------------------------------------------------------------------------
 // The following code defines the PostClient for the PostService microservice.
 // It follows the same pattern as AuthClient, providing methods for CRUD operations
@@ -92,10 +96,6 @@ func (u *UserClient) DeleteUser(ctx context.Context, req *pbUser.DeleteUserReque
 func (u *UserClient) ListUsers(ctx context.Context, req *pbUser.ListUsersRequest) (*pbUser.ListUsersResponse, error) {
 	return u.client.ListUsers(ctx, req)
 }
-
-import (
-	pbPost "github.com/gibbyDev/go-microservices/proto/post"
-)
 
 type PostClient struct {
 	client pbPost.PostServiceClient

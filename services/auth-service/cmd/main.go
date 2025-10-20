@@ -25,8 +25,10 @@ import (
 	"net"
 	"os"
 
-	pb "github.com/gibbyDev/go-microservices/proto/auth"
-	"github.com/gibbyDev/go-microservices/services/auth-service/internal/server"
+	pb "go-microservices/proto/auth"
+
+	"go-microservices/services/auth-service/internal/server"
+
 	"google.golang.org/grpc"
 )
 

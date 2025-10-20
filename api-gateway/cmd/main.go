@@ -24,10 +24,11 @@ import (
 	"log"
 	"os"
 
-	"github.com/gibbyDev/go-microservices/api-gateway/internal/handlers"
-	"github.com/gibbyDev/go-microservices/api-gateway/internal/routes"
+	"go-microservices/api-gateway/internal/handlers"
+	"go-microservices/api-gateway/internal/routes"
 
-	"github.com/gibbyDev/go-microservices/api-gateway/internal/clients"
+	"go-microservices/api-gateway/internal/clients"
+
 	"github.com/gofiber/fiber/v2"
 	"google.golang.org/grpc"
 )
@@ -54,7 +55,7 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080"
+		port = "3000"
 	}
 	log.Fatal(app.Listen(":" + port))
 }
