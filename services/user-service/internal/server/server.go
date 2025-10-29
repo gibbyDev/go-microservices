@@ -23,16 +23,18 @@ import (
 
 	pb "go-microservices/proto/user"
 
+	"go-microservices/services/user-service/internal/repository"
+
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type UserServer struct {
 	pb.UnimplementedUserServiceServer
-	// Add dependencies: repository, config, etc.
+	repo *repository.Repository
 }
 
-func NewUserServer() *UserServer {
-	return &UserServer{}
+func NewUserServer(repo *repository.Repository) *UserServer {
+	return &UserServer{repo: repo}
 }
 
 func (s *UserServer) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {

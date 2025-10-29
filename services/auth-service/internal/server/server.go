@@ -21,15 +21,16 @@ package server
 import (
 	"context"
 	pb "go-microservices/proto/auth"
+	"go-microservices/services/auth-service/internal/repository"
 )
 
 type AuthServer struct {
 	pb.UnimplementedAuthServiceServer
-	// Add dependencies: repository, config, etc.
+	repo *repository.Repository
 }
 
-func NewAuthServer() *AuthServer {
-	return &AuthServer{}
+func NewAuthServer(repo *repository.Repository) *AuthServer {
+	return &AuthServer{repo: repo}
 }
 
 func (s *AuthServer) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterResponse, error) {

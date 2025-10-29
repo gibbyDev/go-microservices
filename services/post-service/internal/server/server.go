@@ -21,17 +21,18 @@ package server
 import (
 	"context"
 	pb "go-microservices/proto/post"
+	"go-microservices/services/post-service/internal/repository"
 
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type PostServer struct {
 	pb.UnimplementedPostServiceServer
-	// Add dependencies: repository, config, etc.
+	repo *repository.Repository
 }
 
-func NewPostServer() *PostServer {
-	return &PostServer{}
+func NewPostServer(repo *repository.Repository) *PostServer {
+	return &PostServer{repo: repo}
 }
 
 func (s *PostServer) CreatePost(ctx context.Context, req *pb.CreatePostRequest) (*pb.CreatePostResponse, error) {

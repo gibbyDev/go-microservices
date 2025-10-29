@@ -6,48 +6,29 @@ services:
     image: postgres:15-alpine
     container_name: go-microservices-db
     environment:
-      POSTGRES_DB: microservices_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ${POSTGRES_DB:-microservices_db}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
     ports:
-      - "5432:5432"
+      - "${BLUEPRINT_DB_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
-    networks:
-      - microservices-network
-
-  # Redis for caching and session management
-  redis:
-    image: redis:7-alpine
-    container_name: go-microservices-redis
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
     networks:
       - microservices-network
 
   # Auth Service
   auth-service:
     build:
-      context: ./services/auth-service
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./services/auth-service/Dockerfile
     container_name: auth-service
     ports:
       - "50051:50051"
     environment:
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-      - DB_NAME=auth_db
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - JWT_SECRET=your-jwt-secret-key
+      - DATABASE_URL=postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:${BLUEPRINT_DB_PORT:-5432}/${POSTGRES_DB:-microservices_db}?sslmode=disable
+      - JWT_SECRET=${JWT_SECRET:-your-jwt-secret}
     depends_on:
       - postgres
-      - redis
     networks:
       - microservices-network
     restart: unless-stopped
@@ -55,22 +36,13 @@ services:
   # User Service
   user-service:
     build:
-      context: ./services/user-service
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./services/user-service/Dockerfile
     container_name: user-service
     ports:
       - "50052:50052"
     environment:
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-      - DB_NAME=user_db
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-    depends_on:
-      - postgres
-      - redis
+      - DATABASE_URL=postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:${BLUEPRINT_DB_PORT:-5432}/${POSTGRES_DB:-microservices_db}?sslmode=disable
     networks:
       - microservices-network
     restart: unless-stopped
@@ -78,22 +50,13 @@ services:
   # Post Service
   post-service:
     build:
-      context: ./services/post-service
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./services/post-service/Dockerfile
     container_name: post-service
     ports:
       - "50053:50053"
     environment:
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-      - DB_NAME=post_db
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-    depends_on:
-      - postgres
-      - redis
+      - DATABASE_URL=postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:${BLUEPRINT_DB_PORT:-5432}/${POSTGRES_DB:-microservices_db}?sslmode=disable
     networks:
       - microservices-network
     restart: unless-stopped
@@ -101,67 +64,22 @@ services:
   # API Gateway
   api-gateway:
     build:
-      context: ./api-gateway
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./api-gateway/Dockerfile
     container_name: api-gateway
     ports:
-      - "8080:8080"
+      - "${PORT:-8080}:${PORT:-8080}"
     environment:
-      - AUTH_SERVICE_HOST=auth-service
-      - AUTH_SERVICE_PORT=50051
-      - USER_SERVICE_HOST=user-service
-      - USER_SERVICE_PORT=50052
-      - POST_SERVICE_HOST=post-service
-      - POST_SERVICE_PORT=50053
-      - JWT_SECRET=your-jwt-secret-key
+      - AUTH_SERVICE_GRPC=auth-service:50051
+      - JWT_SECRET=${JWT_SECRET:-your-jwt-secret}
     depends_on:
       - auth-service
-      - user-service
-      - post-service
     networks:
       - microservices-network
     restart: unless-stopped
 
-  # Jaeger for distributed tracing
-  jaeger:
-    image: jaegertracing/all-in-one:latest
-    container_name: jaeger
-    ports:
-      - "16686:16686"
-      - "14268:14268"
-    environment:
-      - COLLECTOR_OTLP_ENABLED=true
-    networks:
-      - microservices-network
-
-  # Prometheus for monitoring
-  prometheus:
-    image: prom/prometheus:latest
-    container_name: prometheus
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
-    networks:
-      - microservices-network
-
-  # Grafana for visualization
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
-    ports:
-      - "3000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-    volumes:
-      - grafana_data:/var/lib/grafana
-    networks:
-      - microservices-network
-
 volumes:
   postgres_data:
-  redis_data:
-  grafana_data:
 
 networks:
   microservices-network:
