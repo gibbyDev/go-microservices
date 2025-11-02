@@ -27,9 +27,15 @@ import (
 )
 
 func RegisterAuthRoutes(app *fiber.App, authHandler *handlers.AuthHandler) {
-	api := app.Group("/api/auth")
-	api.Post("/register", authHandler.Register)
-	api.Post("/login", authHandler.Login)
+	api := app.Group("/api/v1")
+
+	// Health route
+	api.Get("/", func(c *fiber.Ctx) error {
+		return c.SendString("API Gateway is running!")
+	})
+
+	api.Post("/signup", authHandler.SignUp)
+	api.Post("/signin", authHandler.SignIn)
 	api.Post("/validate", authHandler.ValidateToken)
 	api.Post("/userinfo", middlewares.JWTMiddleware(), authHandler.GetUserInfo)
 }

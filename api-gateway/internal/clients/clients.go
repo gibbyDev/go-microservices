@@ -36,12 +36,12 @@ func NewAuthClient(conn *grpc.ClientConn) *AuthClient {
 	}
 }
 
-func (a *AuthClient) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterResponse, error) {
-	return a.client.Register(ctx, req)
+func (a *AuthClient) SignUp(ctx context.Context, req *pb.SignUpRequest) (*pb.SignUpResponse, error) {
+	return a.client.SignUp(ctx, req)
 }
 
-func (a *AuthClient) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse, error) {
-	return a.client.Login(ctx, req)
+func (a *AuthClient) SignIn(ctx context.Context, req *pb.SignInRequest) (*pb.SignInResponse, error) {
+	return a.client.SignIn(ctx, req)
 }
 
 func (a *AuthClient) ValidateToken(ctx context.Context, req *pb.ValidateTokenRequest) (*pb.ValidateTokenResponse, error) {

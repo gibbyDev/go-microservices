@@ -1,4 +1,5 @@
 .env
+commands.md
 
 /k8s/*.yaml
 .env.example

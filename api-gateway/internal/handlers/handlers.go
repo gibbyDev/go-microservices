@@ -36,24 +36,24 @@ func NewAuthHandler(authClient *clients.AuthClient) *AuthHandler {
 	return &AuthHandler{AuthClient: authClient}
 }
 
-func (h *AuthHandler) Register(c *fiber.Ctx) error {
-	var req pb.RegisterRequest
+func (h *AuthHandler) SignUp(c *fiber.Ctx) error {
+	var req pb.SignUpRequest
 	if err := c.BodyParser(&req); err != nil {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{"error": "invalid request"})
 	}
-	resp, err := h.AuthClient.Register(context.Background(), &req)
+	resp, err := h.AuthClient.SignUp(context.Background(), &req)
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
 	return c.JSON(resp)
 }
 
-func (h *AuthHandler) Login(c *fiber.Ctx) error {
-	var req pb.LoginRequest
+func (h *AuthHandler) SignIn(c *fiber.Ctx) error {
+	var req pb.SignInRequest
 	if err := c.BodyParser(&req); err != nil {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{"error": "invalid request"})
 	}
-	resp, err := h.AuthClient.Login(context.Background(), &req)
+	resp, err := h.AuthClient.SignIn(context.Background(), &req)
 	if err != nil {
 		return c.Status(http.StatusUnauthorized).JSON(fiber.Map{"error": err.Error()})
 	}

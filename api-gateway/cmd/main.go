@@ -37,11 +37,14 @@ func main() {
 	fmt.Println("Starting API Gateway...")
 	app := fiber.New()
 
+	// quick health endpoint to verify gateway is responding
+	// app.Get("/api/v1/", func(c *fiber.Ctx) error {
+	// 	return c.JSON(fiber.Map{"status": "ok", "service": "api-gateway"})
+	// })
+
 	// Connect to AuthService gRPC
 	authServiceAddr := os.Getenv("AUTH_SERVICE_GRPC")
-	if authServiceAddr == "" {
-		authServiceAddr = "localhost:50051"
-	}
+
 	conn, err := grpc.Dial(authServiceAddr, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("Failed to connect to AuthService: %v", err)
@@ -55,7 +58,9 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "3000"
+		port = "8080"
 	}
+	log.Printf("API Gateway listening on :%s", port)
+
 	log.Fatal(app.Listen(":" + port))
 }

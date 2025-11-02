@@ -28,10 +28,10 @@ option go_package = "/auth;authpb";
 
 service AuthService {
   // User registration
-  rpc Register (RegisterRequest) returns (RegisterResponse);
+  rpc SignUp (SignUpRequest) returns (SignUpResponse);
 
   // User login
-  rpc Login (LoginRequest) returns (LoginResponse);
+  rpc SignIn (SignInRequest) returns (SignInResponse);
 
   // Validate JWT token
   rpc ValidateToken (ValidateTokenRequest) returns (ValidateTokenResponse);
@@ -44,24 +44,24 @@ service AuthService {
 }
 
 // Registration
-message RegisterRequest {
+message SignUpRequest {
   string username = 1;
   string email = 2;
   string password = 3;
 }
 
-message RegisterResponse {
+message SignUpResponse {
   string user_id = 1;
   string message = 2;
 }
 
 // Login
-message LoginRequest {
+message SignInRequest {
   string email = 1;
   string password = 2;
 }
 
-message LoginResponse {
+message SignInResponse {
   string access_token = 1;
   string refresh_token = 2;
   string user_id = 3;
