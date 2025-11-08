@@ -1,22 +1,3 @@
-// -----------------------------------------------------------------------------
-// File: main.go
-//
-// This is the entry point for the API Gateway. It initializes the Fiber web
-// server, sets up the gRPC client connection to the AuthService, creates handler
-// instances, registers REST routes, and starts the HTTP server. The main function
-// demonstrates how to bridge RESTful HTTP requests to gRPC microservices.
-//
-// Syntax:
-// - Uses Go's main package and function for application entry.
-// - Uses environment variables for configuration.
-// - Initializes Fiber and gRPC client connections.
-// - Registers routes and starts the server.
-//
-// Purpose:
-// - Serves as the central orchestrator for the API Gateway.
-// - Connects frontend REST requests to backend gRPC services.
-// - Manages server lifecycle and error handling.
-// -----------------------------------------------------------------------------
 package main
 
 import (
@@ -36,11 +17,6 @@ import (
 func main() {
 	fmt.Println("Starting API Gateway...")
 	app := fiber.New()
-
-	// quick health endpoint to verify gateway is responding
-	// app.Get("/api/v1/", func(c *fiber.Ctx) error {
-	// 	return c.JSON(fiber.Map{"status": "ok", "service": "api-gateway"})
-	// })
 
 	// Connect to AuthService gRPC
 	authServiceAddr := os.Getenv("AUTH_SERVICE_GRPC")

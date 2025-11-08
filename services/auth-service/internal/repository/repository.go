@@ -1,11 +1,9 @@
 package repository
 
 import (
-	"errors"
+	"go-microservices/services/auth-service/internal/models"
 
 	"gorm.io/gorm"
-
-	"go-microservices/services/auth-service/internal/models"
 )
 
 type Repository struct {
@@ -20,19 +18,30 @@ func (r *Repository) CreateAuth(a *models.Auth) error {
 	return r.DB.Create(a).Error
 }
 
-func (r *Repository) GetByEmail(email string) (*models.Auth, error) {
+func (r *Repository) GetAuthByEmail(email string) (*models.Auth, error) {
 	var a models.Auth
 	if err := r.DB.Where("email = ?", email).First(&a).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, nil
-		}
 		return nil, err
 	}
 	return &a, nil
 }
 
-// TODO: Add database repository implementations
-// Example repositories:
-// - UserRepository for user data access
-// - TokenRepository for token management
-// - RoleRepository for role management
+func (r *Repository) GetAuthByID(id uint) (*models.Auth, error) {
+	var a models.Auth
+	if err := r.DB.First(&a, id).Error; err != nil {
+		return nil, err
+	}
+	return &a, nil
+}
+
+func (r *Repository) CreateTest(t *models.Test) error {
+	return r.DB.Create(t).Error
+}
+
+func (r *Repository) ListTests() ([]models.Test, error) {
+	var tests []models.Test
+	if err := r.DB.Order("id desc").Find(&tests).Error; err != nil {
+		return nil, err
+	}
+	return tests, nil
+}

@@ -1,22 +1,3 @@
-// -----------------------------------------------------------------------------
-// File: main.go
-//
-// This is the entry point for the Post Service microservice. It initializes the
-// gRPC server, listens on a configured port, and registers the PostService server
-// implementation. The main function demonstrates how to start a gRPC service in Go
-// and connect it to the generated protobuf contract.
-//
-// Syntax:
-// - Uses Go's main package and function for application entry.
-// - Uses environment variables for configuration.
-// - Initializes gRPC server and registers service implementation.
-// - Handles server lifecycle and error logging.
-//
-// Purpose:
-// - Serves as the central orchestrator for the Post Service.
-// - Exposes post CRUD operations to other services via gRPC.
-// - Manages server startup, listening, and graceful error handling.
-// -----------------------------------------------------------------------------
 package main
 
 import (
@@ -42,7 +23,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}
-	// initialize database
+
 	db, err := database.Init()
 	if err != nil {
 		log.Fatalf("failed to init database: %v", err)

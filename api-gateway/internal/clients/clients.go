@@ -1,20 +1,3 @@
-// -----------------------------------------------------------------------------
-// File: clients.go
-//
-// This file defines the gRPC client for the AuthService microservice. It imports
-// the generated protobuf code and wraps the gRPC client in a struct for easy use
-// throughout the API Gateway. The AuthClient struct provides methods to call the
-// Register, Login, ValidateToken, and GetUserInfo RPCs defined in the proto file.
-//
-// Syntax:
-// - Uses Go's package system and imports for modularity.
-// - Defines a struct to encapsulate the gRPC client.
-// - Provides constructor and method wrappers for each RPC.
-//
-// Purpose:
-// - Allows the API Gateway to communicate with the AuthService using gRPC.
-// - Abstracts away connection details and provides a clean interface for handlers.
-// -----------------------------------------------------------------------------
 package clients
 
 import (
@@ -52,19 +35,13 @@ func (a *AuthClient) GetUserInfo(ctx context.Context, req *pb.GetUserInfoRequest
 	return a.client.GetUserInfo(ctx, req)
 }
 
-// -----------------------------------------------------------------------------
-// The following code defines the PostClient for the PostService microservice.
-// It follows the same pattern as AuthClient, providing methods for CRUD operations
-// on posts via gRPC. This enables the API Gateway to communicate with the PostService
-// for creating, retrieving, updating, deleting, and listing posts.
-// -----------------------------------------------------------------------------
+func (a *AuthClient) CreateTest(ctx context.Context, req *pb.CreateTestRequest) (*pb.CreateTestResponse, error) {
+	return a.client.CreateTest(ctx, req)
+}
 
-// -----------------------------------------------------------------------------
-// The following code defines the UserClient for the UserService microservice.
-// It follows the same pattern as AuthClient and PostClient, providing methods for
-// CRUD operations on users via gRPC. This enables the API Gateway to communicate
-// with the UserService for creating, retrieving, updating, deleting, and listing users.
-// -----------------------------------------------------------------------------
+func (a *AuthClient) ListTests(ctx context.Context, req *pb.ListTestsRequest) (*pb.ListTestsResponse, error) {
+	return a.client.ListTests(ctx, req)
+}
 
 type UserClient struct {
 	client pbUser.UserServiceClient

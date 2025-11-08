@@ -1,5 +1,6 @@
 .env
 commands.md
+build/*
 
 /k8s/*.yaml
 .env.example

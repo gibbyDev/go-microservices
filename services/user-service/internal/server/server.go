@@ -1,21 +1,3 @@
-// -----------------------------------------------------------------------------
-// File: server.go
-//
-// This file implements the gRPC server for the UserService microservice. It defines
-// the UserServer struct, which embeds the generated UnimplementedUserServiceServer
-// from the protobuf code. The server provides method stubs for CreateUser, GetUser,
-// UpdateUser, DeleteUser, and ListUsers, which are called by the API Gateway via gRPC.
-//
-// Syntax:
-// - Uses Go's struct and method syntax to implement gRPC service methods.
-// - Embeds the protobuf-generated server interface for compatibility.
-// - Uses context for request handling and cancellation.
-//
-// Purpose:
-// - Serves as the backend for user CRUD operations.
-// - Handles creation, retrieval, updating, deletion, and listing of users.
-// - Provides a contract for future business logic and database integration.
-// -----------------------------------------------------------------------------
 package server
 
 import (
@@ -65,9 +47,3 @@ func (s *UserServer) ListUsers(ctx context.Context, req *pb.ListUsersRequest) (*
 	users := []*pb.User{}
 	return &pb.ListUsersResponse{Users: users}, nil
 }
-
-// TODO: Add gRPC server implementation for user service
-// Example implementations:
-// - UserServiceServer implementation
-// - User profile management
-// - User preferences and settings

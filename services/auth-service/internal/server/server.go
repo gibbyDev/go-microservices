@@ -1,27 +1,10 @@
-// -----------------------------------------------------------------------------
-// File: server.go
-//
-// This file implements the gRPC server for the AuthService microservice. It defines
-// the AuthServer struct, which embeds the generated UnimplementedAuthServiceServer
-// from the protobuf code. The server provides method stubs for Register, Login,
-// ValidateToken, and GetUserInfo, which are called by the API Gateway via gRPC.
-//
-// Syntax:
-// - Uses Go's struct and method syntax to implement gRPC service methods.
-// - Embeds the protobuf-generated server interface for compatibility.
-// - Uses context for request handling and cancellation.
-//
-// Purpose:
-// - Serves as the backend for authentication operations.
-// - Handles registration, login, token validation, and user info retrieval.
-// - Provides a contract for future business logic and database integration.
-// -----------------------------------------------------------------------------
 package server
 
 import (
 	"context"
 	"fmt"
 	"strconv"
+	"time"
 
 	pb "go-microservices/proto/auth"
 	"go-microservices/services/auth-service/internal/models"
@@ -43,18 +26,16 @@ func NewAuthServer(repo *repository.Repository) *AuthServer {
 }
 
 func (s *AuthServer) SignUp(ctx context.Context, req *pb.SignUpRequest) (*pb.SignUpResponse, error) {
-	// hash password
 	hashed, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to hash password: %v", err)
 	}
 
 	auth := &models.Auth{
-		Name:     req.Name,
 		Username: req.Username,
 		Email:    req.Email,
 		Password: string(hashed),
-		Role:     req.Role,
+		Role:     "user", // default role (proto SignUpRequest doesn't include role)
 	}
 
 	if err := s.repo.CreateAuth(auth); err != nil {
@@ -115,6 +96,7 @@ func (s *AuthServer) ValidateToken(ctx context.Context, req *pb.ValidateTokenReq
 }
 
 func (s *AuthServer) GetUserInfo(ctx context.Context, req *pb.GetUserInfoRequest) (*pb.GetUserInfoResponse, error) {
+	// expect req.UserId (proto field user_id)
 	if req.UserId == "" {
 		return nil, status.Errorf(codes.InvalidArgument, "user id required")
 	}
@@ -133,4 +115,39 @@ func (s *AuthServer) GetUserInfo(ctx context.Context, req *pb.GetUserInfoRequest
 		Email:    user.Email,
 		Roles:    []string{user.Role},
 	}, nil
+}
+
+// CreateTest creates a simple Test record in the database
+func (s *AuthServer) CreateTest(ctx context.Context, req *pb.CreateTestRequest) (*pb.CreateTestResponse, error) {
+	if req.Content == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "content required")
+	}
+	t := &models.Test{Content: req.Content}
+	if err := s.repo.CreateTest(t); err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to create test: %v", err)
+	}
+	return &pb.CreateTestResponse{
+		Test: &pb.Test{
+			Id:        uint64(t.ID),
+			Content:   t.Content,
+			CreatedAt: t.CreatedAt.Format(time.RFC3339),
+		},
+	}, nil
+}
+
+// ListTests returns recent test records
+func (s *AuthServer) ListTests(ctx context.Context, req *pb.ListTestsRequest) (*pb.ListTestsResponse, error) {
+	tests, err := s.repo.ListTests()
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to list tests: %v", err)
+	}
+	resp := &pb.ListTestsResponse{Tests: make([]*pb.Test, 0, len(tests))}
+	for _, t := range tests {
+		resp.Tests = append(resp.Tests, &pb.Test{
+			Id:        uint64(t.ID),
+			Content:   t.Content,
+			CreatedAt: t.CreatedAt.Format(time.RFC3339),
+		})
+	}
+	return resp, nil
 }

@@ -9,12 +9,9 @@ import (
 	"gorm.io/gorm"
 )
 
-// Init opens a GORM connection and auto-migrates user-service models.
-// Returns the *gorm.DB or an error.
 func Init() (*gorm.DB, error) {
 	dsn := os.Getenv("DATABASE_URL")
 	if dsn == "" {
-		// fallback for local dev
 		dsn = "host=localhost user=postgres password=postgres dbname=postgres port=5432 sslmode=disable TimeZone=UTC"
 	}
 
@@ -23,7 +20,6 @@ func Init() (*gorm.DB, error) {
 		return nil, err
 	}
 
-	// Auto-migrate user-service models
 	if err := db.AutoMigrate(&models.User{}, &models.Client{}); err != nil {
 		return nil, err
 	}
